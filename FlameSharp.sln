@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlameSharp", "FlameSharp\FlameSharp.csproj", "{B7B0AA3D-B429-4E89-9F76-E5A9501F2CA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7B0AA3D-B429-4E89-9F76-E5A9501F2CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B0AA3D-B429-4E89-9F76-E5A9501F2CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B0AA3D-B429-4E89-9F76-E5A9501F2CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B0AA3D-B429-4E89-9F76-E5A9501F2CA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7AC58AC-EA70-449B-BCBA-6695131729CC}
+	EndGlobalSection
+EndGlobal
