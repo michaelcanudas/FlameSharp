@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using FlameSharp.Components;
 using LLVMSharp;
 
 namespace FlameSharp
@@ -9,8 +11,9 @@ namespace FlameSharp
     {
         static void Main(string[] args)
         {
-            List<Token> tokens = Lexer.Handle("let: i32 x = 10;");
-            SGenerator.Handle(tokens);
+            Parser.Handle(Lexer.Handle("var: i32 x = 10;"));
+
+            LLVM.DumpModule(Parser.Module);
         }
     }
 
@@ -18,143 +21,90 @@ namespace FlameSharp
     {
         public static List<Token> Handle(string source)
         {
-            // temporary
+            List<Token> tokens = new List<Token>();
+
+            bool lexing = true;
+            int index = 0;
+            while (lexing)
+            {
+                switch (true)
+                {
+                    case true when Regex.IsMatch(source[index..(source.Length)], "var"):
+                        string value = Regex.Match(source[index..(source.Length)], "var").Value;
+                        tokens.Add(new Keyword(value));
+
+                        index += value.Length;
+                        break;
+                    default:
+                        throw new Exception("error");
+                }
+            }
+
+            /*
             return new List<Token>()
             {
-                new Keyword("let"),
+                new Keyword("var"),
                 new Symbol(":"),
                 new Type("i32"),
                 new Identifier("x"),
-                new Operator("="),
+                new Symbol("="),
                 new Literal("10"),
                 new Symbol(";")
-            };
+            };*/
         }
     }
 
-    class SGenerator
+    class Parser
     {
+        public static LLVMModuleRef Module { get; set; }
+        public static LLVMBuilderRef Builder { get; set; }
+
         public static void Handle(List<Token> tokens)
         {
+            Module = LLVM.ModuleCreateWithName("");
+            Builder = LLVM.CreateBuilder();
+
+            LLVMValueRef main = LLVM.AddFunction(Module, "main", LLVM.FunctionType(LLVMTypeRef.VoidType(), new LLVMTypeRef[] { }, false));
+            LLVM.PositionBuilderAtEnd(Builder, main.AppendBasicBlock("entry"));
+
             for (int i = 0; i < tokens.Count; i++)
             {
-                tokens[i].Handle(tokens, ref i);
+                // eventually need to support types, keywords, identifiers, operators (everything except literal and symbol)
+                if (!(tokens[i] is Keyword)) continue;
+
+                (tokens[i] as Keyword).Handle(tokens, i);
             }
         }
     }
 
-    class EGenerator
+    class ExpressionParser
     {
-        public static LLVMValueRef Handle(List<Token> tokens)
+        public static LLVMValueRef Handle(IList<Token> tokens)
         {
-            return LLVM.ConstInt(LLVMTypeRef.Int32Type(), 10, true);
-        }
-    }
+            List<Token> reversed = tokens.Reverse().ToList();
 
-    abstract class Token
-    {
-        public string Value { get; set; }
-
-        public Token(string value)
-        {
-            Value = value;
-        }
-
-        public abstract void Handle(List<Token> tokens, ref int i);
-    }
-
-    class Keyword : Token
-    {
-        public Keyword(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i)
-        {
-            if (!(tokens[i] is Keyword)) throw new Exception("error");
-
-            switch (tokens[i].Value)
+            for (int i = 0; i < reversed.Count; i++)
             {
-                case "let":
-                    HandleLet(tokens, ref i);
-                    break;
+                switch (true)
+                {
+                    case true when reversed[i] is Operator && reversed[i].Value == "+":
+                        {
+                            List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
+                            List<Token> rhs = new List<Token>(reversed.ToArray()[0..i]);
+                            return (reversed[i] as Operator).Handle(lhs, rhs, Operator.HandleType.Signed);
+                        }
+                    case true when reversed[i] is Operator && reversed[i].Value == "-":
+                        {
+                            List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
+                            List<Token> rhs = new List<Token>(reversed.ToArray()[0..i]);
+                            return (reversed[i] as Operator).Handle(lhs, rhs, Operator.HandleType.Signed);
+                        }
+                    case true when reversed[i] is Literal:
+                        return LLVM.ConstInt(LLVMTypeRef.Int32Type(), (reversed[i] as Literal).Handle(), true);
+                }
             }
-        }
 
-        private void HandleLet(List<Token> tokens, ref int i)
-        {
-            int _i = i;
-            Type type = tokens[i + 2] is Type ? tokens[i + 2] as Type : throw new Exception("error");
-            Identifier id = tokens[i + 3] is Identifier ? tokens[i + 3] as Identifier : throw new Exception("error");
-            Symbol end = tokens.Where((x, j) => x.Value == ";" && j > _i).First() is Symbol ? tokens.Where((x, j) => x.Value == ";" && j > _i).First() as Symbol : throw new Exception("error");
-            LLVMValueRef value = EGenerator.Handle(new List<Token>(tokens.ToArray()[(i + 5)..(tokens.IndexOf(end))]));
-
-            LLVMBuilderRef b = LLVM.CreateBuilder();
-            LLVMValueRef v = LLVM.BuildAlloca(b, type.ToLLVM(), id.Value); // use stack layer in future
-            LLVM.BuildStore(b, value, v);
-        }
-    }
-
-    class Type : Token
-    {
-        public static string[] Patten = { "i32" };
-
-        public Type(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i) { }
-
-        public LLVMTypeRef ToLLVM()
-        {
-            return Value switch
-            {
-                "i32" => LLVMTypeRef.Int32Type()
-            };
-        }
-    }
-
-    class Symbol : Token
-    {
-        public static string[] Patten = { ":", ";" };
-
-        public Symbol(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i)
-        {
-
-        }
-    }
-
-    class Operator : Token
-    {
-        public static string[] Patten = { "=" };
-
-        public Operator(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i)
-        {
-
-        }
-    }
-
-    class Literal : Token
-    {
-        public static string[] Patten = { "[0-9]+" };
-
-        public Literal(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i)
-        {
-
-        }
-    }
-
-    class Identifier : Token
-    {
-        public static string[] Pattern = { "[a-z][a-zA-Z0-9]*" };
-
-        public Identifier(string value) : base(value) { }
-
-        public override void Handle(List<Token> tokens, ref int i)
-        {
-
+            throw new Exception("error");
         }
     }
 }
