@@ -6,9 +6,9 @@ namespace FlameSharp.Components
 {
     public partial class Operator : Token
     {
-        public static string[] Patten = { };
+        public static string Pattern = "";
 
-        public Operator(string value) : base(value) { }
+        public Operator(int position, string value) : base(position, value) { }
 
         public LLVMValueRef Handle(List<Token> lhs, List<Token> rhs, HandleType type)
         {

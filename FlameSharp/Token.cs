@@ -2,10 +2,12 @@
 {
     public class Token
     {
+        public int Position { get; set; }
         public string Value { get; set; }
 
-        public Token(string value)
+        public Token(int position, string value)
         {
+            Position = position;
             Value = value;
         }
     }

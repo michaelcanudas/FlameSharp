@@ -2,9 +2,9 @@
 {
     class Literal : Token
     {
-        public static string[] Patten = { "[0-9]+" };
+        public static string Pattern = "[0-9]+";
 
-        public Literal(string value) : base(value) { }
+        public Literal(int position, string value) : base(position, value) { }
 
         public ulong Handle()
         {

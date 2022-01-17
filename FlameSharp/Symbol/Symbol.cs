@@ -2,8 +2,8 @@
 {
     public class Symbol : Token
     {
-        public static string[] Patten = { "=", ":", ";" };
+        public static string Pattern = "";
 
-        public Symbol(string value) : base(value) { }
+        public Symbol(int position, string value) : base(position, value) { }
     }
 }
