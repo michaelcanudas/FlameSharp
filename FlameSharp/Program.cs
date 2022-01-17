@@ -11,9 +11,10 @@ namespace FlameSharp
     {
         static void Main(string[] args)
         {
-            Parser.Handle(Lexer.Handle("var: i32 x = 10;"));
+            Lexer.Handle("i32: x = 10;");
+            //Parser.Handle(Lexer.Handle("var: i32 x = 10;"));
 
-            LLVM.DumpModule(Parser.Module);
+            //LLVM.DumpModule(Parser.Module);
         }
     }
 
@@ -29,16 +30,61 @@ namespace FlameSharp
             {
                 switch (true)
                 {
-                    case true when Regex.IsMatch(source[index..(source.Length)], "var"):
-                        string value = Regex.Match(source[index..(source.Length)], "var").Value;
-                        tokens.Add(new Keyword(value));
+                    case true when Regex.IsMatch(source[index..(source.Length)], "KEYWORD"): // KEYWORD
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], "KEYWORD").Value;
+                            tokens.Add(new Keyword(value));
 
-                        index += value.Length;
-                        break;
-                    default:
-                        throw new Exception("error");
+                            index += value.Length;
+                            continue;
+                        }
+                    case true when Regex.IsMatch(source[index..(source.Length)], "i32"): // TYPE
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], "i32").Value;
+                            tokens.Add(new Components.Type(value));
+
+                            index += value.Length;
+                            continue;
+                        }
+                    case true when Regex.IsMatch(source[index..(source.Length)], ":"): // SYMBOL
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], ":").Value;
+                            tokens.Add(new Symbol(value));
+
+                            index += value.Length;
+                            continue;
+                        }
+                    case true when Regex.IsMatch(source[index..(source.Length)], "="): // OPERATOR
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], "=").Value;
+                            tokens.Add(new Operator(value));
+
+                            index += value.Length;
+                            continue;
+                        }
+                    case true when Regex.IsMatch(source[index..(source.Length)], "10"): // LITERAL
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], "10").Value;
+                            tokens.Add(new Literal(value));
+
+                            index += value.Length;
+                            continue;
+                        }
+                    case true when Regex.IsMatch(source[index..(source.Length)], "x"): // IDENTIFIER
+                        {
+                            string value = Regex.Match(source[index..(source.Length)], "x").Value;
+                            tokens.Add(new Identifier(value));
+
+                            index += value.Length;
+                            continue;
+                        }
                 }
+
+                lexing = false;
             }
+
+            tokens.OrderBy(t => t.Value);
+            return tokens;
 
             /*
             return new List<Token>()
