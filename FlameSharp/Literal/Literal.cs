@@ -1,14 +1,24 @@
-﻿namespace FlameSharp.Components
+﻿using System;
+using System.Text.RegularExpressions;
+using LLVMSharp;
+
+namespace FlameSharp.Components
 {
-    class Literal : Token
+    public partial class Literal : Token
     {
-        public static string Pattern = "[0-9]+";
+        public static string Pattern = @"\b[0-9]+\b";
 
         public Literal(int position, string value) : base(position, value) { }
 
-        public ulong Handle()
+        public LLVMValueRef Parse()
         {
-            return ulong.Parse(Value);
+            switch (true)
+            {
+                case true when Regex.IsMatch(Value, @"\b[0-9]+\b"):
+                    return ParseInt();
+                default:
+                    throw new Exception("error");
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ namespace FlameSharp.Components
 {
     public partial class Operator
     {
-        private LLVMValueRef HandleSub(List<Token> lhs, List<Token> rhs, HandleType type)
+        private LLVMValueRef ParseSub(List<Token> lhs, List<Token> rhs, HandleType type)
         {
             LLVMValueRef lVal = ExpressionParser.Handle(lhs);
             LLVMValueRef rVal = ExpressionParser.Handle(rhs);

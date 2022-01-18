@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using LLVMSharp;
 
 namespace FlameSharp.Components
 {
-    class Identifier : Token
+    public class Identifier : Token
     {
-        public static string Pattern = "[a-z][a-zA-Z0-9]*";
+        public static string Pattern = @"[a-z][a-zA-Z0-9]*";
 
         public Identifier(int position, string value) : base(position, value) { }
 
@@ -16,6 +17,12 @@ namespace FlameSharp.Components
                 default:
                     throw new Exception("error");
             }
+        }
+
+        public LLVMValueRef Parse()
+        {
+            // CREATE VALUE STACK
+            throw new NotImplementedException("error");
         }
     }
 }

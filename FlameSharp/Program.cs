@@ -10,14 +10,14 @@ namespace FlameSharp
     {
         static void Main(string[] args)
         {
-            Lexer.Handle("i32: x = 10;");
-            //Parser.Handle(tokens);
-            //Parser.Handle(Lexer.Handle("var: i32 x = 10;"));
+            List<Token> tokens = Lexer.Handle("");
+            Parser.Handle(tokens);
 
-            //LLVM.DumpModule(Parser.Module);
+            LLVM.DumpModule(Parser.Module);
         }
     }
 
+    // NEXT THING TO WORK ON IS EXPRESSION PARSER
     class ExpressionParser
     {
         public static LLVMValueRef Handle(IList<Token> tokens)
@@ -32,16 +32,18 @@ namespace FlameSharp
                         {
                             List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
                             List<Token> rhs = new List<Token>(reversed.ToArray()[0..i]);
-                            return (reversed[i] as Operator).Handle(lhs, rhs, Operator.HandleType.Signed);
+                            return (reversed[i] as Operator).ParseBinary(lhs, rhs, Operator.HandleType.Signed);
                         }
                     case true when reversed[i] is Operator && reversed[i].Value == "-":
                         {
                             List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
                             List<Token> rhs = new List<Token>(reversed.ToArray()[0..i]);
-                            return (reversed[i] as Operator).Handle(lhs, rhs, Operator.HandleType.Signed);
+                            return (reversed[i] as Operator).ParseBinary(lhs, rhs, Operator.HandleType.Signed);
                         }
+                    case true when reversed[i] is Identifier:
+                        return (reversed[i] as Identifier).Parse();
                     case true when reversed[i] is Literal:
-                        return LLVM.ConstInt(LLVMTypeRef.Int32Type(), (reversed[i] as Literal).Handle(), true);
+                        return (reversed[i] as Literal).Parse();
                 }
             }
 

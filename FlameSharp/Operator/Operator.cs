@@ -6,18 +6,18 @@ namespace FlameSharp.Components
 {
     public partial class Operator : Token
     {
-        public static string Pattern = "";
+        public static string Pattern = @"=|\+|-";
 
         public Operator(int position, string value) : base(position, value) { }
 
-        public LLVMValueRef Handle(List<Token> lhs, List<Token> rhs, HandleType type)
+        public LLVMValueRef ParseBinary(List<Token> lhs, List<Token> rhs, HandleType type)
         {
             switch (Value)
             {
                 case "+":
-                    return HandleAdd(lhs, rhs, type);
+                    return ParseAdd(lhs, rhs, type);
                 case "-":
-                    return HandleSub(lhs, rhs, type);
+                    return ParseSub(lhs, rhs, type);
                 default:
                     throw new Exception("error");
             }

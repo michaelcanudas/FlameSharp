@@ -21,6 +21,7 @@ namespace FlameSharp
                 { Literal.Pattern, (i, j) => new Literal(i, j) },
                 { Identifier.Pattern, (i, j) => new Identifier(i, j) }
             };
+            List<string> previousHandlers = new List<string>();
 
             foreach (var x in handlers)
             {
@@ -33,8 +34,11 @@ namespace FlameSharp
                     index += match.Index + match.Value.Length;
                     check = source[index..(source.Length)];
 
-                    tokens.Add(x.Value(index - match.Value.Length, match.Value));
+                    if (previousHandlers.Where(y => Regex.IsMatch(match.Value, y)).Count() != 0) continue;
+                    else tokens.Add(x.Value(index - match.Value.Length, match.Value));
                 }
+
+                previousHandlers.Add(x.Key);
             }
 
             tokens = tokens.OrderBy(x => x.Position).ToList();

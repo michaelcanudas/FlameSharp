@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using LLVMSharp;
 
 namespace FlameSharp.Components
 {
     public partial class Type : Token
     {
-        public static string Pattern = "i32";
+        public static string Pattern = @"i32";
 
         public Type(int position, string value) : base(position, value) { }
 
@@ -20,16 +19,6 @@ namespace FlameSharp.Components
                 default:
                     throw new Exception("error");
             }
-        }
-
-
-        // REPLACE WITH TYPE CONVERTER UTIL
-        public LLVMTypeRef Convert()
-        {
-            return Value switch
-            {
-                "i32" => LLVMTypeRef.Int32Type()
-            };
         }
     }
 }

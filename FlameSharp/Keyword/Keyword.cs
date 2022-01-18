@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace FlameSharp.Components
 {
-    public partial class Keyword : Token
+    public class Keyword : Token
     {
-        public static string Pattern = "var";
+        public static string Pattern = @"KEYWORD";
 
         public Keyword(int position, string value) : base(position, value) { }
 
@@ -13,9 +13,6 @@ namespace FlameSharp.Components
         {
             switch (Value)
             {
-                case "var":
-                    HandleVar(tokens, ref i);
-                    break;
                 default:
                     throw new Exception("error");
             }
