@@ -12,18 +12,39 @@ namespace FlameSharp
         static void Main(string[] args)
         {
             List<Token> tokens = Lexer.Handle(File.ReadAllText("./Example/test.flm"));
-            Parser.Handle(tokens);
+            LLVMValueRef main = LLVM.AddFunction(Parser.Module, "main", LLVM.FunctionType(LLVMTypeRef.VoidType(), new LLVMTypeRef[] { }, false));
+            Parser.Scope = main;
+            Parser.Handle(main.AppendBasicBlock("entry"), tokens);
 
             LLVM.DumpModule(Parser.Module);
         }
     }
 
     // NEXT THING TO WORK ON IS EXPRESSION PARSER
+    // when finally fixing this, make sure to store precedence on operator class
+    // omg and maybe actually 
     class ExpressionParser
     {
         public static (LLVMValueRef, LLVMTypeKind) Handle(IList<Token> tokens)
         {
             List<Token> reversed = tokens.Reverse().ToList();
+
+            for (int i = 0; i < reversed.Count; i++)
+            {
+                if (reversed[i] is Operator op)
+                {
+                    switch (op.Value)
+                    {
+                        case "==":
+                            {
+                                List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
+                                List<Token> rhs = new List<Token>(reversed.ToArray()[0..i]);
+
+                                return op.ParseBinary(lhs, rhs, Operator.HandleType.Signed);
+                            }
+                    }
+                }
+            }
 
             for (int i = 0; i < reversed.Count; i++)
             {

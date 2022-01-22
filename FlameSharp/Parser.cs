@@ -8,11 +8,11 @@ namespace FlameSharp
     {
         public static LLVMModuleRef Module = LLVM.ModuleCreateWithName("");
         public static LLVMBuilderRef Builder = LLVM.CreateBuilder();
+        public static LLVMValueRef Scope;
 
-        public static void Handle(List<Token> tokens)
+        public static void Handle(LLVMBasicBlockRef scope, List<Token> tokens)
         {
-            LLVMValueRef main = LLVM.AddFunction(Module, "main", LLVM.FunctionType(LLVMTypeRef.VoidType(), new LLVMTypeRef[] { }, false));
-            LLVM.PositionBuilderAtEnd(Builder, main.AppendBasicBlock("entry"));
+            LLVM.PositionBuilderAtEnd(Builder, scope);
 
             for (int i = 0; i < tokens.Count; i++)
             {
@@ -29,6 +29,12 @@ namespace FlameSharp
                         continue;
                 }
             }
+        }
+
+        public static void HandleBr(LLVMBasicBlockRef scope, List<Token> tokens, LLVMBasicBlockRef br)
+        {
+            Handle(scope, tokens);
+            LLVM.BuildBr(Builder, br);
         }
     }
 }

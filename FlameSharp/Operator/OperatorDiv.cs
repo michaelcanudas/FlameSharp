@@ -8,15 +8,15 @@ namespace FlameSharp.Components
     {
         private (LLVMValueRef, LLVMTypeKind) ParseDiv(List<Token> lhs, List<Token> rhs, HandleType type)
         {
-            (LLVMValueRef value, LLVMTypeKind type) lVal = ExpressionParser.Handle(lhs);
-            (LLVMValueRef value, LLVMTypeKind type) rVal = ExpressionParser.Handle(rhs);
-            if (lVal.type != rVal.type) throw new Exception("error");
+            (LLVMValueRef value, LLVMTypeKind type) lVar = ExpressionParser.Handle(lhs);
+            (LLVMValueRef value, LLVMTypeKind type) rVar = ExpressionParser.Handle(rhs);
+            if (lVar.type != rVar.type) throw new Exception("error");
 
             return type switch
             {
-                HandleType.Signed => (LLVM.BuildSDiv(Parser.Builder, lVal.value, rVal.value, ""), lVal.type),
-                HandleType.Unsigned => (LLVM.BuildUDiv(Parser.Builder, lVal.value, rVal.value, ""), lVal.type),
-                HandleType.Float => (LLVM.BuildFDiv(Parser.Builder, lVal.value, rVal.value, ""), lVal.type)
+                HandleType.Signed => (LLVM.BuildSDiv(Parser.Builder, lVar.value, rVar.value, ""), lVar.type),
+                HandleType.Unsigned => (LLVM.BuildUDiv(Parser.Builder, lVar.value, rVar.value, ""), lVar.type),
+                HandleType.Float => (LLVM.BuildFDiv(Parser.Builder, lVar.value, rVar.value, ""), lVar.type)
             };
         }
     }

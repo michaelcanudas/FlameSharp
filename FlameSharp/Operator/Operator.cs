@@ -6,7 +6,7 @@ namespace FlameSharp.Components
 {
     public partial class Operator : Token
     {
-        public static string Pattern = @"=|\+|-|\*|\/";
+        public static string Pattern = @"==|=|\+|-|\*|\/";
 
         public Operator(int position, string value) : base(position, value) { }
 
@@ -14,6 +14,8 @@ namespace FlameSharp.Components
         {
             switch (Value)
             {
+                case "==":
+                    return ParseEq(lhs, rhs, type);
                 case "+":
                     return ParseAdd(lhs, rhs, type);
                 case "-":

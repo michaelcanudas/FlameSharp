@@ -8,13 +8,13 @@ namespace FlameSharp.Components
     {
         private (LLVMValueRef, LLVMTypeKind) ParseAdd(List<Token> lhs, List<Token> rhs, HandleType type)
         {
-            (LLVMValueRef value, LLVMTypeKind type) lVal = ExpressionParser.Handle(lhs);
-            (LLVMValueRef value, LLVMTypeKind type) rVal = ExpressionParser.Handle(rhs);
-            if (lVal.type != rVal.type) throw new Exception("error");
+            (LLVMValueRef value, LLVMTypeKind type) lVar = ExpressionParser.Handle(lhs);
+            (LLVMValueRef value, LLVMTypeKind type) rVar = ExpressionParser.Handle(rhs);
+            if (lVar.type != rVar.type) throw new Exception("error");
 
             return type switch
             {
-                _ => (LLVM.BuildAdd(Parser.Builder, lVal.value, rVal.value, ""), lVal.type)
+                _ => (LLVM.BuildAdd(Parser.Builder, lVar.value, rVar.value, ""), lVar.type)
             };
         }
     }
