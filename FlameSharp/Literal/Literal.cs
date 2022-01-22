@@ -10,7 +10,7 @@ namespace FlameSharp.Components
 
         public Literal(int position, string value) : base(position, value) { }
 
-        public LLVMValueRef Parse()
+        public (LLVMValueRef, LLVMTypeKind) Parse()
         {
             switch (true)
             {

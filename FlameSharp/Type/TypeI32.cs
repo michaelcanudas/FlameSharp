@@ -21,9 +21,11 @@ namespace FlameSharp.Components
                 ? tokens.Where((x, j) => x.Value == ";" && j > _i).First() as Symbol
                 : throw new Exception("error");
 
-            LLVMValueRef value = ExpressionParser.Handle(new List<Token>(tokens.ToArray()[(i + 4)..tokens.IndexOf(end)]));
+            (LLVMValueRef value, LLVMTypeKind type) var = ExpressionParser.Handle(new List<Token>(tokens.ToArray()[(i + 4)..tokens.IndexOf(end)]));
             LLVMValueRef ptr = LLVM.BuildAlloca(Parser.Builder, LLVM.Int32Type(), id.Value);
-            LLVM.BuildStore(Parser.Builder, value, ptr);
+            LLVM.BuildStore(Parser.Builder, var.value, ptr);
+
+            Stack.Add(id.Value, var);
 
             i = tokens.IndexOf(end);
         }

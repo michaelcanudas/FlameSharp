@@ -19,10 +19,9 @@ namespace FlameSharp.Components
             }
         }
 
-        public LLVMValueRef Parse()
+        public (LLVMValueRef, LLVMTypeKind) Parse()
         {
-            // CREATE VALUE STACK
-            throw new NotImplementedException("error");
+            return Stack.Get(Value);
         }
     }
 }

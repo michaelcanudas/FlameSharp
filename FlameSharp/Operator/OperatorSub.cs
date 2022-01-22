@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LLVMSharp;
 
 namespace FlameSharp.Components
 {
     public partial class Operator
     {
-        private LLVMValueRef ParseSub(List<Token> lhs, List<Token> rhs, HandleType type)
+        private (LLVMValueRef, LLVMTypeKind) ParseSub(List<Token> lhs, List<Token> rhs, HandleType type)
         {
-            LLVMValueRef lVal = ExpressionParser.Handle(lhs);
-            LLVMValueRef rVal = ExpressionParser.Handle(rhs);
+            (LLVMValueRef value, LLVMTypeKind type) lVal = ExpressionParser.Handle(lhs);
+            (LLVMValueRef value, LLVMTypeKind type) rVal = ExpressionParser.Handle(rhs);
+            if (lVal.type != rVal.type) throw new Exception("error");
 
             return type switch
             {
-                HandleType.Signed => LLVM.BuildSub(Parser.Builder, lVal, rVal, ""),
-                HandleType.Unsigned => LLVM.BuildSub(Parser.Builder, lVal, rVal, ""),
-                HandleType.Float => LLVM.BuildFSub(Parser.Builder, lVal, rVal, "")
+                HandleType.Float => (LLVM.BuildFSub(Parser.Builder, lVal.value, rVal.value, ""), lVal.type),
+                _ => (LLVM.BuildSub(Parser.Builder, lVal.value, rVal.value, ""), lVal.type)
             };
         }
     }

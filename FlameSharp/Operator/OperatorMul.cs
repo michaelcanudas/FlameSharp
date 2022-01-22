@@ -6,7 +6,7 @@ namespace FlameSharp.Components
 {
     public partial class Operator
     {
-        private (LLVMValueRef, LLVMTypeKind) ParseAdd(List<Token> lhs, List<Token> rhs, HandleType type)
+        private (LLVMValueRef, LLVMTypeKind) ParseMul(List<Token> lhs, List<Token> rhs, HandleType type)
         {
             (LLVMValueRef value, LLVMTypeKind type) lVal = ExpressionParser.Handle(lhs);
             (LLVMValueRef value, LLVMTypeKind type) rVal = ExpressionParser.Handle(rhs);
@@ -14,7 +14,8 @@ namespace FlameSharp.Components
 
             return type switch
             {
-                _ => (LLVM.BuildAdd(Parser.Builder, lVal.value, rVal.value, ""), lVal.type)
+                HandleType.Float => (LLVM.BuildFMul(Parser.Builder, lVal.value, rVal.value, ""), lVal.type),
+                _ => (LLVM.BuildMul(Parser.Builder, lVal.value, rVal.value, ""), lVal.type)
             };
         }
     }

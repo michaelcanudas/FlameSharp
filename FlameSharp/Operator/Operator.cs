@@ -6,11 +6,11 @@ namespace FlameSharp.Components
 {
     public partial class Operator : Token
     {
-        public static string Pattern = @"=|\+|-";
+        public static string Pattern = @"=|\+|-|\*|\/";
 
         public Operator(int position, string value) : base(position, value) { }
 
-        public LLVMValueRef ParseBinary(List<Token> lhs, List<Token> rhs, HandleType type)
+        public (LLVMValueRef, LLVMTypeKind) ParseBinary(List<Token> lhs, List<Token> rhs, HandleType type)
         {
             switch (Value)
             {
@@ -18,6 +18,10 @@ namespace FlameSharp.Components
                     return ParseAdd(lhs, rhs, type);
                 case "-":
                     return ParseSub(lhs, rhs, type);
+                case "*":
+                    return ParseMul(lhs, rhs, type);
+                case "/":
+                    return ParseDiv(lhs, rhs, type);
                 default:
                     throw new Exception("error");
             }

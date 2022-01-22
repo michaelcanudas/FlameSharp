@@ -22,7 +22,7 @@ namespace FlameSharp
                         (tokens[i] as Keyword).Handle(tokens, ref i);
                         continue;
                     case true when tokens[i] is Type:
-                        (tokens[i] as Type).Handle(tokens, ref i);
+                        (tokens[i] as Type).Handle(tokens, ref i); // check this
                         continue;
                     case true when tokens[i] is Identifier:
                         (tokens[i] as Identifier).Handle(tokens, ref i);
