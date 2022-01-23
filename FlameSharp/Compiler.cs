@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FlameSharp.Lexers;
 using FlameSharp.Stacks;
 using FlameSharp.Tokens;
