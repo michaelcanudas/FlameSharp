@@ -9,7 +9,7 @@ namespace FlameSharp
 {
     public class Compiler
     {
-        static string Compile(Config config)
+        public static string Compile(Config config)
         {
             List<Token> tokens = Lexer.Handle(config.Directory);
 

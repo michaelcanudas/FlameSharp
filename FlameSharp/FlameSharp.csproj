@@ -11,10 +11,4 @@
     <PackageReference Include="LLVMSharp" Version="5.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Examples\test.flm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
