@@ -8,16 +8,16 @@ using LLVMSharp;
 
 namespace FlameSharp
 {
-    class Program
+    public class Compiler
     {
-        static void Main(string[] args)
+        static string Compile(Config config)
         {
-            List<Token> tokens = Lexer.Handle(File.ReadAllText("./Examples/test.flm"));
+            List<Token> tokens = Lexer.Handle(config.Directory);
 
             FuncStack.Push(LLVM.AddFunction(Parser.Module, "main", LLVM.FunctionType(LLVMTypeRef.VoidType(), new LLVMTypeRef[] { }, false)), "main");
             BlockParser.Parse(FuncStack.Get("main").AppendBasicBlock("entry"), tokens);
 
-            LLVM.DumpModule(Parser.Module);
+            return Parser.Module.ToString();
         }
     }
 }
