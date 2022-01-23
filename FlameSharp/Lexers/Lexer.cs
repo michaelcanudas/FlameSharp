@@ -2,28 +2,30 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using FlameSharp.Components;
-using Type = FlameSharp.Components.Type;
+using FlameSharp.Tokens;
 
-namespace FlameSharp
+namespace FlameSharp.Lexers
 {
     public class Lexer
     {
         public static List<Token> Handle(string source)
         {
+            // fix double tokenize with -> and -
+            // also check all handlers to make sure all tokens are being checked
+
             List<Token> tokens = new List<Token>();
             Dictionary<string, Func<int, string, Token>> handlers = new Dictionary<string, Func<int, string, Token>>()
             {
-                { Keyword.Pattern, (i, j) => new Keyword(i, j) },
-                { Type.Pattern, (i, j) => new Type(i, j) },
-                { Symbol.Pattern, (i, j) => new Symbol(i, j) },
-                { Operator.Pattern, (i, j) => new Operator(i, j) },
-                { Literal.Pattern, (i, j) => new Literal(i, j) },
-                { Identifier.Pattern, (i, j) => new Identifier(i, j) }
+                { @"let|if", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
+                { @"i32", (i, j) => new Token(i, j, Token.TokenType.Type) },
+                { @"->|{|}|:|;", (i, j) => new Token(i, j, Token.TokenType.Symbol) },
+                { @"==|!=|=|\+|-|\*|\/|%", (i, j) => new Token(i, j, Token.TokenType.Operator) },
+                { @"\b[0-9]+\b", (i, j) => new Token(i, j, Token.TokenType.Literal) },
+                { @"[a-z][a-zA-Z0-9]*", (i, j) => new Token(i, j, Token.TokenType.Identifier) }
             };
             List<string> previousHandlers = new List<string>();
 
-            foreach (var x in handlers)
+            foreach (KeyValuePair<string, Func<int, string, Token>> x in handlers)
             {
                 int index = 0;
                 string check = source[index..(source.Length)];

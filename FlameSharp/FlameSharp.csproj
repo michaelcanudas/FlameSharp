@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Example\test.flm">
+    <None Update="Examples\test.flm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
