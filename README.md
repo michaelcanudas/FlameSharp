@@ -32,7 +32,7 @@ func: fib i32 -> i32 {
     return: match: value
         ? 0 : 0
         ? 1 : 1
-        ? x : fib (x - 1) + fib (x - 2);
+        ? value : fib (x - 1) + fib (x - 2);
 }
 ```
 
