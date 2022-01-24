@@ -30,9 +30,9 @@ Fibonacci
 ```zig
 func: fib i32 -> i32 {
     return: match: value
-        ? 0 : 0
-        ? 1 : 1
-        ? value : fib (value - 1) + fib (value - 2);
+        ? 0: 0
+        ? 1: 1
+        ? value: fib (value - 1) + fib (value - 2);
 }
 ```
 
@@ -41,7 +41,7 @@ Factorial
 func: fac i32 -> i32 {
     return: if: value == 0 
         ? 0
-        : fac (value - 1) * value;
+        ? fac (value - 1) * value;
 }
 ```
 
