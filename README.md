@@ -26,13 +26,22 @@ no documentation yet!
 
 ## Examples
 
-no examples either...
+Fibonacci
 ```zig
 func: fib i32 -> i32 {
     return: match: value
         ? 0 : 0
         ? 1 : 1
-        ? value : fib (x - 1) + fib (x - 2);
+        ? value : fib (value - 1) + fib (value - 2);
+}
+```
+
+Factorial
+```zig
+func: fac i32 -> i32 {
+    return: if: value == 0 
+        ? 0
+        : fac (value - 1) * value;
 }
 ```
 
