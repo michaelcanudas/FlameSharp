@@ -1,11 +1,7 @@
-# FlameSharp
- C# compiler for the Flame programming language.
-
-
 <p align="center">
-  <a href="https://github.com/theflamelang/FlameSharp">
+  <a>
     <img src="https://avatars.githubusercontent.com/u/98204361?s=200&v=4" height="96">
-    <h3 align="center">Flame</h3>
+    <h3 align="center">Flame:fire:</h3>
   </a>
 </p>
 
@@ -16,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/theflamelang/FlameSharp"><strong>Documentation</strong></a> ·
   <a href="https://github.com/theflamelang/FlameSharp"><strong>Examples</strong></a> ·
-  <a href="hhttps://github.com/theflamelang/FlameSharp"><strong>Website</strong></a>
+  <a href="https://github.com/theflamelang/FlameSharp"><strong>Website</strong></a>
 </p>
 <br/>
 
