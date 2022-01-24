@@ -27,6 +27,15 @@ no documentation yet!
 ## Examples
 
 no examples either...
+```
+func: fib (i32: x) -> i32 {
+    return: match: x -> {
+        0 -> 0,
+        1 -> 1,
+        x -> fib (x - 1) + fib (x - 2)
+    }
+}
+```
 
 ## Website
 
