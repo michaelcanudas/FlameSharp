@@ -1,2 +1,37 @@
 # FlameSharp
  C# compiler for the Flame programming language.
+
+
+<p align="center">
+  <a href="https://github.com/theflamelang/FlameSharp">
+    <img src="https://avatars.githubusercontent.com/u/98204361?s=200&v=4" height="96">
+    <h3 align="center">Flame</h3>
+  </a>
+</p>
+
+<p align="center">
+  A programming language built to make powerful tasks simpler.
+</p>
+
+<p align="center">
+  <a href="https://github.com/theflamelang/FlameSharp"><strong>Documentation</strong></a> ·
+  <a href="https://github.com/theflamelang/FlameSharp"><strong>Examples</strong></a> ·
+  <a href="hhttps://github.com/theflamelang/FlameSharp"><strong>Website</strong></a>
+</p>
+<br/>
+
+## Flame
+
+Flame is a **compiled**, **data-oriented**, and **strongly typed** programming language designed to handle powerful tasks quickly, without any need of complicated low-level concepts. Flame uses a variety of systems that are designed to simplify tasks including memory management, stack/heap usage, and more!
+
+## Documentation
+
+no documentation yet!
+
+## Examples
+
+no examples either...
+
+## Website
+
+...and we dont have a website
