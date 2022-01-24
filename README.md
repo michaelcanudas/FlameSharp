@@ -29,7 +29,7 @@ no documentation yet!
 Fibonacci
 ```zig
 func: fib i32 -> i32 {
-    return: match: value
+    return: value
         ? 0: 0
         ? 1: 1
         ? value: fib (value - 1) + fib (value - 2);
@@ -39,7 +39,7 @@ func: fib i32 -> i32 {
 Factorial
 ```zig
 func: fac i32 -> i32 {
-    return: if: value == 0 
+    return: value == 0 
         ? 0
         ? fac (value - 1) * value;
 }
