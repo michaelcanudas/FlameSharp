@@ -28,20 +28,24 @@ no documentation yet!
 
 Fibonacci
 ```zig
-func: fib i32 -> i32 {
-    return: value
-        ? 0: 0
-        ? 1: 1
-        ? value: fib (value - 1) + fib (value - 2);
+func fib (i32 x) -> i32
+{
+  if x == 0 || x == 1 ->
+  {
+    return x;
+  }
+  else ->
+  {
+    return fib (x - 1) + fib (x - 2);
+  }
 }
 ```
 
 Factorial
 ```zig
-func: fac i32 -> i32 {
-    return: value == 0 
-        ? 0
-        ? fac (value - 1) * value;
+func fac (i32 x) -> i32
+{
+    return x == 0 ? 0 : fac (x - 1) * x; 
 }
 ```
 
