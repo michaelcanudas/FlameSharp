@@ -18,7 +18,7 @@ namespace FlameSharp.Lexers
             {
                 { @"let|if", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
                 { @"i32", (i, j) => new Token(i, j, Token.TokenType.Type) },
-                { @"->|{|}|:|;", (i, j) => new Token(i, j, Token.TokenType.Symbol) },
+                { @"->|{|}|;", (i, j) => new Token(i, j, Token.TokenType.Symbol) },
                 { @"==|!=|=|\+|-|\*|\/|%", (i, j) => new Token(i, j, Token.TokenType.Operator) },
                 { @"\b[0-9]+\b", (i, j) => new Token(i, j, Token.TokenType.Literal) },
                 { @"[a-z][a-zA-Z0-9]*", (i, j) => new Token(i, j, Token.TokenType.Identifier) }

@@ -15,13 +15,15 @@ namespace FlameSharp.Handlers
         {
             int _i = i;
 
-            Token conditionStart = tokens.Where((x, j) => x.Value == ":" && x.Type == Token.TokenType.Symbol && j > _i).First();
+            Token conditionStart = tokens[_i + 1];
             Token conditionEnd = tokens.Where((x, j) => x.Value == "->" && x.Type == Token.TokenType.Symbol && j > _i).First();
-            Token blockStart = tokens.Where((x, j) => x.Value == "{" && x.Type == Token.TokenType.Symbol && j > _i).First();
-            Token blockEnd = Brackets.FindClosingBracket(tokens, tokens.IndexOf(blockStart));
+            
+            Token blockStart = tokens.IndexOf(conditionEnd) + 1;
+            Token blockEnd = Brackets.FindClosingBracket(tokens, tokens.IndexOf(blockStart - 1));
+            
             if (conditionStart == null || conditionEnd == null || blockStart == null || blockEnd == null) throw new Exception("error");
 
-            ValueParser.Parse(new List<Token>(tokens.ToArray()[(tokens.IndexOf(conditionStart) + 1)..tokens.IndexOf(conditionEnd)]));
+            ValueParser.Parse(new List<Token>(tokens.ToArray()[tokens.IndexOf(conditionStart)..tokens.IndexOf(conditionEnd)]));
             (LLVMValueRef value, LLVMTypeKind type) var = ValueStack.Pop();
 
             LLVMBasicBlockRef ifBlock = FuncStack.Get("main").AppendBasicBlock("if");
@@ -29,7 +31,7 @@ namespace FlameSharp.Handlers
             LLVMBasicBlockRef mergeBlock = FuncStack.Get("main").AppendBasicBlock("merge");
 
             LLVM.BuildCondBr(Parser.Builder, var.value, ifBlock, elseBlock);
-            BlockParser.Parse(ifBlock, mergeBlock, new List<Token>(tokens.ToArray()[(tokens.IndexOf(blockStart) + 1)..tokens.IndexOf(blockEnd)]));
+            BlockParser.Parse(ifBlock, mergeBlock, new List<Token>(tokens.ToArray()[tokens.IndexOf(blockStart)..tokens.IndexOf(blockEnd)]));
             BlockParser.Parse(elseBlock, mergeBlock, new List<Token>());
 
             i = tokens.IndexOf(blockEnd);
