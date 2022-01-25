@@ -18,5 +18,10 @@ namespace FlameSharp
 
             return Parser.Module.ToString();
         }
+
+        /*
+        move utils out of utils classes to simplify
+        go over parsers
+        */
     }
 }
