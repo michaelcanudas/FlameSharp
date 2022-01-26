@@ -46,41 +46,40 @@ namespace FlameSharp.Parsers
         {
             int _i = i;
 
-           Token start = tokens.Where((x, j) => {
-               x.Type == TokenType.Symbol &&
-               x.Value == "{" &&
-               j > i
-           }).First();
-           int startIndex = tokens.IndexOf(start) + 1;
+            Token start = tokens.Where((x, j) =>
+                x.Type ==  Token.TokenType.Symbol &&
+                x.Value == "{" &&
+                j > _i
+            ).First();
+            int startIndex = tokens.IndexOf(start) + 1;
 
-           Token end =  tokens.Where((x, j) => {
-               x.Type == TokenType.Symbol &&
-               x.Value == "}" &&
-               j > startIndex &&
-               // call function to add to stack and check if stack == 0
-           }).First();
-           int endIndex = tokens.IndexOf(end);
-           
-           // find way to throw error
+            int stack = 0;
+            Token end = tokens.Where((x, j) => {
+                if (j < startIndex) return false;
+                if (x.Type !=  Token.TokenType.Symbol) return false;
 
-           i = endIndex + 1;
+                if (x.Value == "}" && stack == 0)
+                {
+                    return true;
+                }
+                else if (x.Value == "}")
+                {
+                    stack--;
+                }
+                else if (x.Value == "{")
+                {
+                    stack++;
+                }
+                
+                return false;
+            }).First();
+            int endIndex = tokens.IndexOf(end);
+            
+            // find way to throw error
 
-           return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
+            i = endIndex + 1;
+
+            return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
         }
     }
 }
-/*
-if {
-
-}
-
-if {
-    if {
-
-    }
-}
-
-if {
-
-}
-*/
