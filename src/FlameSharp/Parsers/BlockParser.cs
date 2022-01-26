@@ -41,5 +41,46 @@ namespace FlameSharp.Parsers
             Scope = nextScope;
             LLVM.PositionBuilderAtEnd(Parser.Builder, nextScope);
         }
+
+        public static List<Token> Generate(List<Token> tokens, ref int i)
+        {
+            int _i = i;
+
+           Token start = tokens.Where((x, j) => {
+               x.Type == TokenType.Symbol &&
+               x.Value == "{" &&
+               j > i
+           }).First();
+           int startIndex = tokens.IndexOf(start) + 1;
+
+           Token end =  tokens.Where((x, j) => {
+               x.Type == TokenType.Symbol &&
+               x.Value == "}" &&
+               j > startIndex &&
+               // call function to add to stack and check if stack == 0
+           }).First();
+           int endIndex = tokens.IndexOf(end);
+           
+           // find way to throw error
+
+           i = endIndex + 1;
+
+           return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
+        }
     }
 }
+/*
+if {
+
+}
+
+if {
+    if {
+
+    }
+}
+
+if {
+
+}
+*/

@@ -22,5 +22,21 @@ namespace FlameSharp.Utils
 
             throw new Exception("error");
         }
+
+        /*
+        if {
+
+        }
+
+        if {
+            if {
+
+            }
+        }
+
+        if {
+            
+        }
+        */
     }
 }
