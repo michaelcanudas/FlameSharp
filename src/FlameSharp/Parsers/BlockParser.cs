@@ -10,12 +10,11 @@ namespace FlameSharp.Parsers
     {
         public static LLVMBasicBlockRef Scope;
 
-        public static void Parse(LLVMBasicBlockRef scope, List<Token> tokens)
+        public static void Parse(LLVMBasicBlockRef scope, LLVMBasicBlockRef nextScope, List<Token> tokens)
         {
-            LLVMBasicBlockRef preScope = Scope;
-
             Scope = scope;
             LLVM.PositionBuilderAtEnd(Parser.Builder, Scope);
+
             for (int i = 0; i < tokens.Count; i++)
             {
                 if (tokens[i].Type != Token.TokenType.Keyword) throw new Exception("error");
@@ -30,13 +29,6 @@ namespace FlameSharp.Parsers
                         break;
                 }
             }
-            Scope = preScope;
-            LLVM.PositionBuilderAtEnd(Parser.Builder, Scope);
-        }
-
-        public static void Parse(LLVMBasicBlockRef scope, LLVMBasicBlockRef nextScope, List<Token> tokens)
-        {
-            Parse(scope, tokens);
 
             Scope = nextScope;
             LLVM.PositionBuilderAtEnd(Parser.Builder, nextScope);

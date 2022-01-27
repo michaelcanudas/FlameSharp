@@ -89,5 +89,30 @@ namespace FlameSharp.Parsers
 
             throw new Exception("error");
         }
+
+        public static List<Token> Generate(List<Token> tokens, ref int i)
+        {
+            int _i = i;
+
+            Token start = tokens.Where((x, j) =>
+                (x.Type == Token.TokenType.Operator ||
+                x.Type == Token.TokenType.Identifier ||
+                x.Type == Token.TokenType.Literal) &&
+                j > _i
+            ).First();
+            int startIndex = tokens.IndexOf(start);
+
+            Token end = tokens.Where((x, j) =>
+                x.Type == Token.TokenType.Symbol &&
+                j > startIndex
+            ).First();
+            int endIndex = tokens.IndexOf(end);
+            
+            // find way to throw error
+
+            i = endIndex + 1;
+
+            return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
+        }
     }
 }

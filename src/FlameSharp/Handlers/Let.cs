@@ -18,18 +18,19 @@ namespace FlameSharp.Handlers
             if (tokens[i + 2].Type != Token.TokenType.Operator || !(tokens[i + 3].Value == "=")) throw new Exception("error");
             if (tokens[i + 3].Type != Token.TokenType.Type) throw new Exception("error");
 
-            Token end = tokens.Where((x, j) => x.Value == ";" && x.Type == Token.TokenType.Symbol && j > _i).First();
-            if (end == null) throw new Exception("error");
+            //Token end = tokens.Where((x, j) => x.Value == ";" && x.Type == Token.TokenType.Symbol && j > _i).First();
+            //if (end == null) throw new Exception("error");
 
-            ValueParser.Parse(new List<Token>(tokens.ToArray()[(i + 5)..tokens.IndexOf(end)]));
+            //ValueParser.Parse(new List<Token>(tokens.ToArray()[(i + 5)..tokens.IndexOf(end)]));
+            ValueParser.Parse(ValueParser.Generate(tokens, ref i));
             (LLVMValueRef value, LLVMTypeKind type) var = ValueStack.Pop();
 
-            LLVMValueRef ptr = LLVM.BuildAlloca(Parser.Builder, LLVM.Int32Type(), tokens[1 + 2].Value);
+            LLVMValueRef ptr = LLVM.BuildAlloca(Parser.Builder, LLVM.Int32Type(), tokens[i + 3].Value);
             LLVM.BuildStore(Parser.Builder, var.value, ptr);
 
-            ValueStack.Push(var, tokens[i + 2].Value);
+            ValueStack.Push(var, tokens[i + 1].Value);
 
-            i = tokens.IndexOf(end);
+            i += 1;
         }
     }
 }
