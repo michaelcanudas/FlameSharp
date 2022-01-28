@@ -29,8 +29,6 @@ namespace FlameSharp.Handlers
             LLVM.BuildStore(Parser.Builder, var.value, ptr);
 
             ValueStack.Push(var, tokens[i + 1].Value);
-
-            i += 1;
         }
     }
 }

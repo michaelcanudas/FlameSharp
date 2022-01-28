@@ -39,8 +39,6 @@ namespace FlameSharp.Handlers
             //BlockParser.Parse(ifBlock, mergeBlock, new List<Token>(tokens.ToArray()[tokens.IndexOf(blockStart)..tokens.IndexOf(blockEnd)]));
             BlockParser.Parse(ifBlock, mergeBlock, block);
             BlockParser.Parse(elseBlock, mergeBlock, new List<Token>());
-
-            i = tokens.IndexOf(blockEnd);
         }
     }
 }
