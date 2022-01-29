@@ -21,7 +21,6 @@ namespace FlameSharp.Handlers
 
             LLVMValueRef ptr = LLVM.BuildAlloca(Parser.Builder, LLVM.Int32Type(), id.Value);
             LLVM.BuildStore(Parser.Builder, var.value, ptr);
-
             ValueStack.Push(var, id.Value);
         }
     }

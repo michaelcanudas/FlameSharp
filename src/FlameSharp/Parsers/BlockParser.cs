@@ -20,17 +20,26 @@ namespace FlameSharp.Parsers
 
             for (int i = 0; i < tokens.Count; i++)
             {
-                if (tokens[i].Type != Token.TokenType.Keyword) throw new Exception("error");
-
-                switch (tokens[i].Value)
+                if (tokens[i].Type == Token.TokenType.Keyword)
                 {
-                    case "let":
-                        Let.Handle(tokens, ref i);
-                        break;
-                    case "if":
-                        If.Handle(tokens, ref i);
-                        break;
+                    switch (tokens[i].Value)
+                    {
+                        case "let":
+                            Let.Handle(tokens, ref i);
+                            break;
+                        case "if":
+                            If.Handle(tokens, ref i);
+                            break;
+                        case "loop":
+                            Loop.Handle(tokens, ref i);
+                            break;
+                    }
                 }
+                else if (tokens[i].Type == Token.TokenType.Identifier)
+                {
+                    Assign.Handle(tokens, ref i);
+                }
+                else throw new Exception("error");
             }
 
             Scope = preScope;
