@@ -13,14 +13,19 @@ namespace FlameSharp.Stacks
             literals.Push(value);
         }
 
+        public static (LLVMValueRef, LLVMTypeKind) Pop()
+        {
+            return literals.Pop();
+        }
+
         public static void Push((LLVMValueRef, LLVMTypeKind) value, string key)
         {
             identifiers.Add(key, value);
         }
 
-        public static (LLVMValueRef, LLVMTypeKind) Pop()
+        public static void Put(string key, (LLVMValueRef, LLVMTypeKind) value)
         {
-            return literals.Pop();
+            identifiers[key] = value;
         }
 
         public static (LLVMValueRef, LLVMTypeKind) Get(string key)

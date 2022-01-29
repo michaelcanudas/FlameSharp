@@ -16,7 +16,7 @@ namespace FlameSharp.Lexers
             List<Token> tokens = new List<Token>();
             Dictionary<string, Func<int, string, Token>> handlers = new Dictionary<string, Func<int, string, Token>>()
             {
-                { @"func|let|if", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
+                { @"func|let|if|loop", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
                 { @"i32", (i, j) => new Token(i, j, Token.TokenType.Type) },
                 { @"->|{|}|;", (i, j) => new Token(i, j, Token.TokenType.Symbol) },
                 { @"==|!=|=|\+|\*|\/|%", (i, j) => new Token(i, j, Token.TokenType.Operator) }, // - is temporarily removed due to collision with ->

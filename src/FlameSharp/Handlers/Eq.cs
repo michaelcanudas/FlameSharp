@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using FlameSharp.Parsers;
 using FlameSharp.Stacks;
 using FlameSharp.Tokens;
+using FlameSharp.Parsers;
 using LLVMSharp;
 
 namespace FlameSharp.Handlers
