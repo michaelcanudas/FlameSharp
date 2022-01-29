@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using FlameSharp.Parsers;
+﻿using System.IO;
+using System.Collections.Generic;
 using FlameSharp.Lexers;
 using FlameSharp.Tokens;
+using FlameSharp.Parsers;
 using LLVMSharp;
-using System.IO;
+
 
 namespace FlameSharp
 {
@@ -17,10 +18,5 @@ namespace FlameSharp
 
             LLVM.DumpModule(Parser.Module);
         }
-
-        /*
-        move utils out of utils classes to simplify
-        go over parsers
-        */
     }
 }

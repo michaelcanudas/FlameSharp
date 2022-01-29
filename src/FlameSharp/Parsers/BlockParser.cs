@@ -20,6 +20,8 @@ namespace FlameSharp.Parsers
 
             for (int i = 0; i < tokens.Count; i++)
             {
+                // future: neated this loop to prevent a bunch of "if" from building up with new types
+
                 if (tokens[i].Type == Token.TokenType.Keyword)
                 {
                     switch (tokens[i].Value)
@@ -30,14 +32,15 @@ namespace FlameSharp.Parsers
                         case "if":
                             If.Handle(tokens, ref i);
                             break;
-                        case "loop":
+                        /*case "loop":
                             Loop.Handle(tokens, ref i);
-                            break;
+                            break;*/
                     }
                 }
                 else if (tokens[i].Type == Token.TokenType.Identifier)
                 {
-                    Assign.Handle(tokens, ref i);
+                    //Assign.Handle(tokens, ref i);
+                    throw new Exception("error");
                 }
                 else throw new Exception("error");
             }

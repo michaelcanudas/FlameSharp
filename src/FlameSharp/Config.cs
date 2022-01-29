@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FlameSharp
+﻿namespace FlameSharp
 {
     public class Config
     {

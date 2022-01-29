@@ -12,12 +12,6 @@ namespace FlameSharp.Parsers
         {
             List<Token> reversed = tokens.Reverse().ToList();
 
-            // cmp
-            // add/sub
-            // mul/div/mod
-            // id
-            // lit
-
             for (int i = 0; i < reversed.Count; i++)
             {
                 List<Token> lhs = new List<Token>(reversed.ToArray()[(i + 1)..(reversed.Count)]);
