@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using FlameSharp.Handlers;
 using FlameSharp.Tokens;
+using FlameSharp.Handlers;
 using LLVMSharp;
 
 namespace FlameSharp.Parsers
@@ -10,8 +11,10 @@ namespace FlameSharp.Parsers
     {
         public static LLVMBasicBlockRef Scope;
 
-        public static void Parse(LLVMBasicBlockRef scope, LLVMBasicBlockRef nextScope, List<Token> tokens)
+        public static void Parse(LLVMBasicBlockRef scope, List<Token> tokens)
         {
+            LLVMBasicBlockRef preScope = Scope;
+
             Scope = scope;
             LLVM.PositionBuilderAtEnd(Parser.Builder, Scope);
 
@@ -30,8 +33,15 @@ namespace FlameSharp.Parsers
                 }
             }
 
+            Scope = preScope;
+            LLVM.PositionBuilderAtEnd(Parser.Builder, Scope);
+        }
+        public static void Parse(LLVMBasicBlockRef scope, LLVMBasicBlockRef nextScope, List<Token> tokens)
+        {
+            Parse(scope, tokens);
+
             Scope = nextScope;
-            LLVM.PositionBuilderAtEnd(Parser.Builder, nextScope);
+            LLVM.PositionBuilderAtEnd(Parser.Builder, Scope);
         }
 
         public static List<Token> Generate(List<Token> tokens, ref int i)
@@ -69,7 +79,7 @@ namespace FlameSharp.Parsers
             
             // find way to throw error
 
-            i = endIndex + 1;
+            i = endIndex;
 
             return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
         }

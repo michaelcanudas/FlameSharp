@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
-using FlameSharp.Lexers;
-using FlameSharp.Stacks;
-using FlameSharp.Tokens;
 using FlameSharp.Parsers;
+using FlameSharp.Lexers;
+using FlameSharp.Tokens;
 using LLVMSharp;
+using System.IO;
 
 namespace FlameSharp
 {
     public class Compiler
     {
-        public static string Compile(Config config)
+        public static void Compile(Config config)
         {
-            List<Token> tokens = Lexer.Handle(config.Directory);
+            List<Token> tokens = Lexer.Handle(File.ReadAllText(config.Directory));
 
-            FuncStack.Push(LLVM.AddFunction(Parser.Module, "main", LLVM.FunctionType(LLVMTypeRef.VoidType(), new LLVMTypeRef[] { }, false)), "main");
-            BlockParser.Parse(FuncStack.Get("main").AppendBasicBlock("entry"), tokens);
+            Parser.Parse(tokens);
 
-            return Parser.Module.ToString();
+            LLVM.DumpModule(Parser.Module);
         }
 
         /*
