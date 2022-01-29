@@ -110,7 +110,7 @@ namespace FlameSharp.Parsers
             
             // find way to throw error
 
-            i = endIndex + 1;
+            i = endIndex;
 
             return new List<Token>(tokens.ToArray()[startIndex..endIndex]);
         }

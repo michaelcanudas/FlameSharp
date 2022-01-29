@@ -16,10 +16,10 @@ namespace FlameSharp.Lexers
             List<Token> tokens = new List<Token>();
             Dictionary<string, Func<int, string, Token>> handlers = new Dictionary<string, Func<int, string, Token>>()
             {
-                { @"let|if", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
+                { @"func|let|if", (i, j) => new Token(i, j, Token.TokenType.Keyword) },
                 { @"i32", (i, j) => new Token(i, j, Token.TokenType.Type) },
                 { @"->|{|}|;", (i, j) => new Token(i, j, Token.TokenType.Symbol) },
-                { @"==|!=|=|\+|-|\*|\/|%", (i, j) => new Token(i, j, Token.TokenType.Operator) },
+                { @"==|!=|=|\+|\*|\/|%", (i, j) => new Token(i, j, Token.TokenType.Operator) }, // - is temporarily removed due to collision with ->
                 { @"\b[0-9]+\b", (i, j) => new Token(i, j, Token.TokenType.Literal) },
                 { @"[a-z][a-zA-Z0-9]*", (i, j) => new Token(i, j, Token.TokenType.Identifier) }
             };
@@ -44,6 +44,7 @@ namespace FlameSharp.Lexers
             }
 
             tokens = tokens.OrderBy(x => x.Position).ToList();
+
             return tokens;
         }
     }

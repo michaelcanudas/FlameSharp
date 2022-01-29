@@ -1,0 +1,10 @@
+﻿func main i32 arg ->
+{
+	let ryan = i32 420;
+	if ryan != 420 ->
+	{
+		let michael = i32 69;
+	}
+
+	let omg = i32 1;
+}
